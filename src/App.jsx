@@ -17,8 +17,8 @@ function App() {
     console.log("fetchData called");
 
     const allEvents = await getEvents();
-    console.log("Fetched events:", allEvents);\
-    
+    console.log("Fetched events:", allEvents);
+
     const filteredEvents = currentCity === 'See all cities' ?
       allEvents :
       allEvents.filter(event => event.location === currentCity);
