@@ -26,15 +26,23 @@ export const getEvents = async () => {
 
     const token = await getAccessToken();
 
-    if (token) {
-        removeQuery();
-        const url = `https://ubg9w1be0j.execute-api.us-east-2.amazonaws.com/dev/api/get-events/${token}`;
-        console.log("Fetching events from:", url);
+    if (!token) {
+        console.warn("No access token found, aborting event fetch");
+        return null;
+    }
+
+    removeQuery();
+    const url = `https://ubg9w1be0j.execute-api.us-east-2.amazonaws.com/dev/api/get-events/${token}`;
+    console.log("Fetching events from:", url);
+
+    try {
         const response = await fetch(url);
         const result = await response.json();
-        if (result) {
-            return result.events;
-        } else return null;
+        console.log("Fetched events:", result);
+        return result?.events ?? null;
+    } catch (error) {
+        console.error("Error fetching events:", error);
+        return null;
     }
 };
 
