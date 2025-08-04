@@ -25,31 +25,16 @@ export const getEvents = async () => {
     }
 
     const token = await getAccessToken();
-    if (!token) {
-        console.warn("No token recieved. Aborting event fetch.");
-        return;
-    }
 
     if (token) {
         removeQuery();
-        const url = `https://ubg9w1be0j.execute-api.us-east-2.amazonaws.com/dev/api/get-events/${token}`;
+        const url = 'https://ubg9w1be0j.execute-api.us-east-2.amazonaws.com/dev/api/get-events/{code}' + '/' + token;
         console.log("Fetching events from:", url);
-
-        try {
-            const response = await fetch(url);
-            const result = await response.json();
-            console.log("API result:", result);
-
-            if (result && result.events) {
-                return result.events;
-            } else{
-                console.warn("No events found in API response");
-                return null;
-            }
-        } catch (error) {
-            console.error("Error fetching events:", error);
-            return null;
-        }
+        const response = await fetch(url);
+        const result = await response.json();
+        if (result) {
+            return result.events;
+        } else return null;
     }
 };
 
@@ -70,7 +55,7 @@ const removeQuery = () => {
 const getToken = async (code) => {
     const encodeCode = encodeURIComponent(code);
     const response = await fetch(
-        `https://ubg9w1be0j.execute-api.us-east-2.amazonaws.com/dev/api/token/${encodeCode}`
+        'https://ubg9w1be0j.execute-api.us-east-2.amazonaws.com/dev/api/token/{acess_token}' + '/' + encodeCode
     );
     const { access_token } = await response.json();
     access_token && localStorage.setItem("access_token", access_token);
