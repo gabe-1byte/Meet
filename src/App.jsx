@@ -22,7 +22,12 @@ function App() {
     const filteredEvents = currentCity === 'See all cities' ?
       allEvents :
       allEvents.filter(event => event.location === currentCity);
-    setEvents(filteredEvents.slice(0, currentNOE));
+    if (filteredEvents && Array.isArray(filteredEvents)) {
+      setEvents(filteredEvents.slice(0, currentNOE));
+    } else {
+      console.warn("filteredEvents is not an array or is undefined");
+      setEvents([]);
+    }
     setAllLocations(extractLocations(allEvents));
   };
 
