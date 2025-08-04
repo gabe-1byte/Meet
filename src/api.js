@@ -6,6 +6,14 @@ export const extractLocations = (events) => {
     return locations;
 };
 
+const checkToken = async (accessToken) => {
+    const response = await fetch(
+        `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
+    );
+    const result = await response.json();
+    return result;
+}
+
 export const getEvents = async () => {
     if (window.location.href.startsWith("http://localhost")) {
         return mockData;
@@ -58,16 +66,13 @@ export const getAccessToken = async () => {
         const searchParams = new URLSearchParams(window.location.search);
         const code = await searchParams.get("code");
         if (!code) {
-            const checkToken = async (accessToken) => {
                 const response = await fetch(
                     "https://ubg9w1be0j.execute-api.us-east-2.amazonaws.com/dev/api/get-auth-url"
                 );
-                const result = await response.json();
-                return result;
-            };
-            return (window.location.href = authUrl);
+                const { authUrl } = await response.json();
+                return (window.location.href = authUrl);
         }
-        return code && getAccessToken(code);
+        return code && getToken(code);
     }
     return accessToken;
 };
