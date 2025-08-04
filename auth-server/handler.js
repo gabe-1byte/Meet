@@ -8,23 +8,14 @@ const redirect_uris = [
     "https://meet-sigma-livid.vercel.app/"
 ];
 
-const allowedOrigins = [
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-    "http://10.0.0.204:8080",
-    "https://meet-sigma-livid.vercel.app"
-];
-
-function getCorsHeaders(origin) {
-    const isAllowed = allowedOrigins.includes(origin);
+function getCorsHeaders() {
     return {
-        'Access-Control-Allow-Origin': isAllowed ? origin : '',
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Credentials': true
     };
 }
-
 
 const oAuth2Client = new google.auth.OAuth2(
     CLIENT_ID,
@@ -33,8 +24,7 @@ const oAuth2Client = new google.auth.OAuth2(
 );
 
 module.exports.getAuthURL = async (event) => {
-    const origin = event.headers.origin || '';
-    const headers = getCorsHeaders(origin);
+    const headers = getCorsHeaders();
 
     if (event.httpMethod === 'OPTIONS') {
         return {
@@ -57,8 +47,7 @@ module.exports.getAuthURL = async (event) => {
 };
 
 module.exports.getAccessToken = async (event) => {
-    const origin = event.headers.origin || '';
-    const headers = getCorsHeaders(origin);
+    const headers = getCorsHeaders();
 
     if (event.httpMethod === 'OPTIONS') {
         return {
@@ -93,8 +82,7 @@ module.exports.getAccessToken = async (event) => {
 };
 
 module.exports.getCalendarEvents = async (event) => {
-    const origin = event.headers.origin || '';
-    const headers = getCorsHeaders(origin);
+    const headers = getCorsHeaders();
 
     if (event.httpMethod === 'OPTIONS') {
         return {
@@ -124,6 +112,7 @@ module.exports.getCalendarEvents = async (event) => {
         );
     })
     .then(results => {
+        console.log("Fetched events from calendar", results.data.items);
         return {
             statusCode: 200,
             headers,
