@@ -88,9 +88,13 @@ export const getAccessToken = async () => {
                 window.location.href = authUrl;
                 return null;
         }
-        if (code) {
-            const token = await getToken(code);
+        const token = await getToken(code);
+        if (token) {
+            removeQuery();
             return token;
+        } else {
+            console.warn("Failed to retrieve token");
+            return null;
         }
     }
     return accessToken;
