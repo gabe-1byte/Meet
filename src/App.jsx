@@ -14,7 +14,11 @@ function App() {
   const [currentCity, setCurrentCity] = useState('See all cities');
 
   const fetchData = async () => {
+    console.log("fetchData called");
+
     const allEvents = await getEvents();
+    console.log("Fetched events:", allEvents);\
+    
     const filteredEvents = currentCity === 'See all cities' ?
       allEvents :
       allEvents.filter(event => event.location === currentCity);
