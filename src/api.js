@@ -16,19 +16,33 @@ const checkToken = async (accessToken) => {
 
 export const getEvents = async () => {
     if (window.location.href.startsWith("http://localhost")) {
+        console.log("Using mock data for events");
         return mockData;
     }
 
     const token = await getAccessToken();
+    console.log("Access token:", token);
 
     if (token) {
         removeQuery();
         const url = `https://ubg9w1be0j.execute-api.us-east-2.amazonaws.com/dev/api/get-events/${token}`;
-        const response = await fetch(url);
-        const result = await response.json();
-        if (result) {
-            return result.events;
-        } else return null;
+        console.log("Fetching events from:", url);
+
+        try {
+            const response = await fetch(url);
+            const result = await response.json();
+            console.log("API result:", result);
+
+            if (result && result.events) {
+                return result.events;
+            } else{
+                console.warn("No events found in API response");
+                return null;
+            }
+        } catch (error) {
+            console.error("Error fetching events:", error);
+            return null;
+        }
     }
 };
 
