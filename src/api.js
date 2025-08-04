@@ -18,14 +18,17 @@ const checkToken = async (accessToken) => {
 
 export const getEvents = async () => {
     console.log("getEvents called");
-    
+
     if (window.location.href.startsWith("http://localhost")) {
         console.log("Using mock data for events");
         return mockData;
     }
 
     const token = await getAccessToken();
-    console.log("Access token:", token);
+    if (!token) {
+        console.warn("No token recieved. Aborting event fetch.");
+        return;
+    }
 
     if (token) {
         removeQuery();
@@ -88,7 +91,9 @@ export const getAccessToken = async () => {
                     "https://ubg9w1be0j.execute-api.us-east-2.amazonaws.com/dev/api/get-auth-url"
                 );
                 const { authUrl } = await response.json();
-                return (window.location.href = authUrl);
+                console.log("Redirecting to:", authUrl);
+                window.location.href = authUrl;
+                return null;
         }
         return code && getToken(code);
     }
