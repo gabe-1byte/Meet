@@ -19,8 +19,11 @@ const checkToken = async (accessToken) => {
 export const getEvents = async () => {
     console.log("getEvents called");
 
-    if (window.location.href.startsWith("http://localhost")) {
-        console.log("Using mock data for events");
+    const hostName = window.location.hostname;
+    const isProduction = hostName === "meet-sigma-livid.vercel.app";
+
+    if (!isProduction) {
+        console.log("Using mock data (not in production)");
         return mockData;
     }
 
