@@ -8,7 +8,7 @@ const Event = ({ event }) => {
             <h2>{event.summary}</h2>
             <p>Start time: {event.created}</p>
             <p>Location: {event.location}</p>
-            <button onClick={() => setShowDetails(!showDetails)}>
+            <button className="details-btn" onClick={() => setShowDetails(!showDetails)}>
                 {showDetails ? 'Hide Details' : 'Show Details'}
             </button>
             {showDetails && (
