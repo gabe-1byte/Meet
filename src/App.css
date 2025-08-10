@@ -39,6 +39,10 @@ input[type="number"] {
   background-color: gray;
 }
 
+.city::placeholder {
+  color: white;
+}
+
 #city-search {
   display: flex;
   flex-direction: column;
