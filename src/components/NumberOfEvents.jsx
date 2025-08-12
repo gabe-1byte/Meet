@@ -11,7 +11,7 @@ const NumberOfEvents = ({ onNumberChanged }) => {
 
     return (
         <div id="number-of-events">
-            <input type="number" className="number-of-events-input" value={value} onChange={handleChange} />
+            <input type="text" className="number-of-events-input" value={value} onChange={handleChange} />
         </div>
     );
 };
