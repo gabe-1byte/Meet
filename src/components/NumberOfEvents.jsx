@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 
-const NumberOfEvents = () => {
+const NumberOfEvents = ({ onNumberChanged }) => {
     const [value, setValue] = useState(32);
+
+    const handleChange = (event) => {
+        const newValue = event.target.value;
+        setValue(newValue);
+        onNumberChanged?.(newValue);
+    };
+
     return (
         <div id="number-of-events">
-            <input className="number-of-events-input" value={value} onChange={(e) => setValue(e.target.value)} />
+            <input type="number" className="number-of-events-input" value={value} onChange={handleChange} />
         </div>
     );
 };
