@@ -1,7 +1,5 @@
 import mockData from "./mock-data";
 
-console.log("api.js loaded");
-
 export const extractLocations = (events) => {
     const extractedLocations = events.map((event) => event.location);
     const locations = [...new Set(extractedLocations)];
@@ -17,13 +15,11 @@ const checkToken = async (accessToken) => {
 }
 
 export const getEvents = async () => {
-    console.log("getEvents called");
 
     const hostName = window.location.hostname;
     const isProduction = hostName === "meet-sigma-livid.vercel.app";
 
     if (!isProduction) {
-        console.log("Using mock data (not in production)");
         return mockData;
     }
 

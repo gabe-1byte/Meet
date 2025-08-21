@@ -7,17 +7,13 @@ import { extractLocations, getEvents } from './api';
 import './App.css';
 
 function App() {
-  console.log("App component loaded");
   const [allLocations, setAllLocations] = useState([]);
   const [currentNOE, setCurrentNOE] = useState(32);
   const [events, setEvents] = useState([]);
   const [currentCity, setCurrentCity] = useState('See all cities');
 
   const fetchData = async () => {
-    console.log("fetchData called");
-
     const allEvents = await getEvents();
-    console.log("Fetched events:", allEvents);
 
     const filteredEvents = currentCity === 'See all cities' ?
       allEvents :
