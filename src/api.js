@@ -1,4 +1,5 @@
 import mockData from "./mock-data";
+import NProgress from "nprogress";
 
 export const extractLocations = (events) => {
     const extractedLocations = events.map((event) => event.location);
@@ -23,6 +24,12 @@ export const getEvents = async () => {
         return mockData;
     }
 
+    if (!navigator.onLine) {
+        const events = localStorage.getItem("lastEvents");
+        NProgress.done();
+        return events ? JSON.parse(events) : [];
+    }
+
     const token = await getAccessToken();
 
     if (!token) {
@@ -34,16 +41,25 @@ export const getEvents = async () => {
     const url = `https://ubg9w1be0j.execute-api.us-east-2.amazonaws.com/dev/api/get-events/${token}`;
     console.log("Fetching events from:", url);
 
-    try {
-        const response = await fetch(url);
-        const result = await response.json();
-        console.log("Fetched events:", result);
-        return result?.events ?? null;
-    } catch (error) {
-        console.error("Error fetching events:", error);
-        return null;
-    }
+    const response = await fetch(url);
+    const result = await response.json();
+    if (result) {
+        NProgress.done();
+        localStorage.setItem("lastEvents", JSON.stringify(result.events));
+        return result.events;
+    } else return null;
 };
+
+//     try {
+//         const response = await fetch(url);
+//         const result = await response.json();
+//         console.log("Fetched events:", result);
+//         return result?.events ?? null;
+//     } catch (error) {
+//         console.error("Error fetching events:", error);
+//         return null;
+//     }
+// };
 
 const removeQuery = () => {
     let newurl;
