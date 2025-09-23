@@ -1,19 +1,10 @@
 import mockData from "./mock-data";
+import NProgress from "nprogress";
 
 export const extractLocations = (events) => {
     const extractedLocations = events.map((event) => event.location);
     const locations = [...new Set(extractedLocations)];
     return locations;
-};
-
-const safeNProgressDone = async () => {
-  try {
-    const mod = await import('nprogress');
-    const NProgress = mod?.default ?? mod;
-    if (NProgress && typeof NProgress.done === 'function') NProgress.done();
-  } catch (e) {
-    console.warn("NProgress not available:", e);
-  }
 };
 
 const checkToken = async (accessToken) => {
@@ -35,7 +26,7 @@ export const getEvents = async () => {
 
     if (!navigator.onLine) {
         const events = localStorage.getItem("lastEvents");
-        await safeNProgressDone();
+        NProgress.done();
         return events ? JSON.parse(events) : [];
     }
 
@@ -53,7 +44,7 @@ export const getEvents = async () => {
     const response = await fetch(url);
     const result = await response.json();
     if (result) {
-        await safeNProgressDone();
+        NProgress.done();
         localStorage.setItem("lastEvents", JSON.stringify(result.events));
         return result.events;
     } else return null;
