@@ -46,6 +46,7 @@ function App() {
       <div className="alert-container">
         {infoAlert.length ? <InfoAlert text={infoAlert} /> : null}
         {errorAlert.length ? <ErrorAlert text={errorAlert} /> : null}
+        {WarningAlert.length ? <WarningAlert text={WarningAlert} /> : null}
       </div>
       <CitySearch 
         allLocations={allLocations}
