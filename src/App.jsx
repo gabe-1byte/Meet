@@ -6,6 +6,7 @@ import { extractLocations, getEvents } from './api';
 import { InfoAlert, ErrorAlert, WarningAlert } from './components/Alert';
 
 import './App.css';
+import { set } from 'nprogress';
 
 function App() {
   const [allLocations, setAllLocations] = useState([]);
@@ -14,6 +15,7 @@ function App() {
   const [currentCity, setCurrentCity] = useState('See all cities');
   const [infoAlert , setInfoAlert] = useState("");
   const [errorAlert , setErrorAlert] = useState("");
+  const [WarningAlert , setWarningAlert] = useState("");
 
   const fetchData = async () => {
     const allEvents = await getEvents();
@@ -32,9 +34,9 @@ function App() {
 
   useEffect(() => {
     if (navigator.onLine) {
-      setInfoAlert("");
+      setWarningAlert("");
     } else {
-      setInfoAlert("You are currently offline. The events may not be up to date.");
+      setWarningAlert("You are currently offline. The events may not be up to date.");
     }
     fetchData();
   }, [currentCity, currentNOE]);
