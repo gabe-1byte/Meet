@@ -3,7 +3,7 @@ import CitySearch from './components/CitySearch';
 import EventList from './components/EventList';
 import NumberOfEvents from './components/NumberOfEvents';
 import { extractLocations, getEvents } from './api';
-import { InfoAlert, ErrorAlert } from './components/Alert';
+import { InfoAlert, ErrorAlert, WarningAlert } from './components/Alert';
 
 import './App.css';
 
@@ -31,6 +31,11 @@ function App() {
   };
 
   useEffect(() => {
+    if (navigator.onLine) {
+      setInfoAlert("");
+    } else {
+      setInfoAlert("You are currently offline. The events may not be up to date.");
+    }
     fetchData();
   }, [currentCity, currentNOE]);
 
