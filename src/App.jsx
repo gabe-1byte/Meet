@@ -5,6 +5,7 @@ import NumberOfEvents from './components/NumberOfEvents';
 import { extractLocations, getEvents } from './api';
 import { InfoAlert, ErrorAlert, WarningAlert } from './components/Alert';
 import CityEventsChart from './components/CityEventsChart';
+import EventGenresChart from './components/EventGenresChart';
 
 import './App.css';
 import { set } from 'nprogress';
@@ -57,8 +58,14 @@ function App() {
       <NumberOfEvents onNumberChanged={setCurrentNOE} 
         setErrorAlert={setErrorAlert}
       />
-      <CityEventsChart allLocations={allLocations} events={events} />
-
+      <div className='charts-container'>
+        <div className='chart'>
+          <EventGenresChart events={events} />
+        </div>
+        <div className='chart'>
+          <CityEventsChart allLocations={allLocations} events={events} />
+        </div>
+      </div>
       <EventList events={events} />
     </div>
   );
