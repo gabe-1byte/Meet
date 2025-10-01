@@ -16,4 +16,29 @@ console.error = (...args) => {
   if (!shouldIgnore) originalError(...args);
 };
 
+let ResizeObserverBackup;
+
+if (typeof window !== 'undefined') {
+  ResizeObserverBackup = window.ResizeObserver;
+}
+
+beforeEach(() => {
+  if (typeof window !== 'undefined') {
+    // @ts-ignore
+    delete window.ResizeObserver;
+    window.ResizeObserver = jest.fn().mockImplementation(() => ({
+      observe: jest.fn(),
+      unobserve: jest.fn(),
+      disconnect: jest.fn(),
+    }));
+  }
+});
+
+afterEach(() => {
+  if (typeof window !== 'undefined') {
+    window.ResizeObserver = ResizeObserverBackup;
+  }
+  jest.restoreAllMocks();
+});
+
 jest.setTimeout(30000);
